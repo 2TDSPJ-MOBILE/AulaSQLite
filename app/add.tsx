@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { MotiView } from "moti";
 import { useState } from "react";
 import { Alert, Button, TextInput, View } from "react-native";
 import { addNote } from "../src/db/notes";
@@ -20,14 +21,25 @@ export default function AddNoteScreen(){
 
     return(
         <View style={{flex:1,padding:20}}>
-            <TextInput 
-                placeholder="Título"
-                value={title}
-                onChangeText={(value)=>setTitle(value)}
-                style={{borderWidth:1,padding:10,
+            <MotiView
+                from={{opacity:0,translateX:-30}}
+                animate={{opacity:1,translateX:0}}
+                transition={{delay:300}}
+            >
+                <TextInput 
+                    placeholder="Título"
+                    value={title}
+                    onChangeText={(value)=>setTitle(value)}
+                    style={{borderWidth:1,padding:10,
                     marginBottom:10,borderRadius:6
-                }}
-            />
+                }}/>
+            </MotiView>
+            
+            <MotiView
+                from={{opacity:0,translateX:30}}
+                animate={{opacity:1,translateX:0}}
+                transition={{delay:300}}
+            >
             <TextInput 
                 placeholder="Conteúdo"
                 value={content}
@@ -38,7 +50,19 @@ export default function AddNoteScreen(){
                     marginBottom:10
                 }}
             />
-            <Button title="SALVAR" onPress={handleSave}/>
+            </MotiView>
+            <MotiView
+                from={{opacity:0.8,scale:1}}
+                animate={{opacity:1,scale:1.05}}
+                transition={{
+                    loop:true,
+                    type:'timing',
+                    duration:1000
+                }}
+            >
+                <Button title="SALVAR" onPress={handleSave} color="red"/>
+            </MotiView>
+            
         </View>
     )
 }

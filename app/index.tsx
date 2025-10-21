@@ -1,4 +1,5 @@
 import { useFocusEffect, useRouter } from "expo-router";
+import { MotiView,MotiText } from "moti";
 import React, { useCallback, useState } from "react";
 import { Button, FlatList, StyleSheet, Text, View } from "react-native";
 import { deleteNote, getNotes } from "../src/db/notes";
@@ -29,17 +30,26 @@ export default function HomeScreen() {
       <FlatList 
         data={notes}
         keyExtractor={item=>item.id.toString()}
-        renderItem={({item})=>(
-          <View
+        renderItem={({item,index})=>(
+          <MotiView
+            from={{opacity:0,translateY:20}}
+            animate={{opacity:1,translateY:0}}         
+            transition={{delay:index*200}}   
             style={{
               borderBottomWidth:1,
               padding:10,
               marginBottom:5
             }}
           > 
-            <Text style={{fontWeight:'bold'}}>{item.title}</Text>
+            <MotiText 
+              from={{scale:0.95}}
+              animate={{scale:1}}
+              transition={{type:"timing",duration:300}}
+              style={{fontWeight:'bold'}}
+            >
+              {item.title}
+            </MotiText>
             <Text>{item.content}</Text>
-            <Text>ID:{item.id}</Text>
 
             <View style={{flexDirection:'row',gap:5,marginTop:5}}>
               {/* Botão Editar */}
@@ -57,7 +67,7 @@ export default function HomeScreen() {
                 />
               </View>
             </View>
-          </View>
+          </MotiView>
         )}
       />
     </View>
