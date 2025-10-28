@@ -2,14 +2,14 @@ import axios from "axios";
 
 //Tipando a resposta vindo da requisição
 interface TranslationResponse{
-    reponseData:{
+    responseData:{
         translatedText:string //Texto traduzido retorna pela api
     }
 }
 
 //Configurações constantes da API
 const API_CONFIG ={
-    url:"https://api.memory.translated.net/get", //Endpoint da requisição de tradução
+    url:"https://api.mymemory.translated.net/get", //Endpoint da requisição de tradução
     retries:3, //Número máximo de tentativas em caso de erro
     delay:1000, //Delay de 1 segundo em cada tentativa
     timeout:10000, //Tempo máximo esperando uma resposta;
@@ -27,10 +27,9 @@ async function makeTranslationRequest(text:string):Promise<string>{
         timeout:API_CONFIG.timeout
     }
     //Chama a API usando Axios e tipa a resposta
-        const response = await axios.get<TranslationResponse>(API_CONFIG.url,requestConfig)
-    
+    const response = await axios.get<TranslationResponse>(API_CONFIG.url,requestConfig)
     //retorna o texto traduzido
-    return response.data.reponseData.translatedText
+    return response.data.responseData.translatedText
 }
 
 
