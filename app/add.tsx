@@ -1,3 +1,4 @@
+import { generateTitleFromContentHF } from "@/src/ia/generateTitleHF";
 import { useRouter } from "expo-router";
 import { MotiView } from "moti";
 import { useState } from "react";
@@ -7,6 +8,7 @@ import { addNote } from "../src/db/notes";
 export default function AddNoteScreen(){
     const[title,setTitle]=useState("") //Estado do título
     const[content,setContent]=useState("")//Estado do conteúdo
+    const[loading,setLoading]=useState(false)//Estado de loading da IA
     const router = useRouter()//hook para navegação
 
     //Função chamada ao pressionar "Salvar"
@@ -17,6 +19,21 @@ export default function AddNoteScreen(){
         }
         addNote(title,content)//Adiciona no banco
         router.back()//Volta para a tela HomeScreen
+    }
+
+    //Função para gerar o título com IA
+    async function handleGenerateTitle() {
+        if(!content.trim()){
+            Alert.alert("Atenção","Digite algo no conteúdo antes de gerar o título.")
+            return
+        }
+        setLoading(true)
+        const generated = await generateTitleFromContentHF(content)
+        if(generated){
+            setTitle(generated)
+            setLoading(false)
+        }
+
     }
 
     return(
@@ -51,6 +68,25 @@ export default function AddNoteScreen(){
                 }}
             />
             </MotiView>
+            
+            <MotiView
+                style={{marginBottom:10}}
+                from={{opacity:0.8,scale:1}}
+                animate={{opacity:1,scale:1.05}}
+                transition={{
+                    loop:true,
+                    type:'timing',
+                    duration:1000
+                }}
+            >
+                
+             <Button
+                title="Gerar Título com IA"
+                onPress={handleGenerateTitle}
+                disabled={loading}
+             />
+            </MotiView>
+
             <MotiView
                 from={{opacity:0.8,scale:1}}
                 animate={{opacity:1,scale:1.05}}
@@ -60,7 +96,8 @@ export default function AddNoteScreen(){
                     duration:1000
                 }}
             >
-                <Button title="SALVAR" onPress={handleSave} color="red"/>
+
+             <Button title="SALVAR" onPress={handleSave} color="red"/>
             </MotiView>
             
         </View>
