@@ -11,7 +11,10 @@ module.exports = {
     "^react-native/jest/mock$": "<rootDir>/jest/react-native-jest-mock.js",
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(react-native|@react-native|@react-navigation|@react-native-community)/)"
+    // Permitir que pacotes do Expo e alguns pacotes relacionados ao React Native
+    // sejam transformados pelo babel-jest. Alguns pacotes (ex: expo/virtual/env)
+    // usam sintaxe ESM ('export') e precisam ser processados.
+    "node_modules/(?!(react-native|@react-native|@react-navigation|@react-native-community|expo|@expo|expo-.*|@unimodules)/)"
   ],
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
 };
